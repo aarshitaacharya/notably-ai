@@ -39,7 +39,7 @@ export default function Page() {
 
             <div className="mt-0">
               {/* You can use <SignIn /> from Clerk here instead of the custom form */}
-              <SignIn />
+              <SignIn redirectUrl='/dashboard'/>
             </div>
 
             <footer className="text-xs text-white-400 text-center mt-8 mb-4">

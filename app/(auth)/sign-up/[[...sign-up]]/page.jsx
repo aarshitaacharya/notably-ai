@@ -18,7 +18,7 @@ export default function Page() {
               <h2 className="text-2xl font-bold text-white sm:text-3xl">Notably AI</h2>
               <p className="max-w-xl mt-3 text-gray-300">
                 Your ideas, your team - one unified workspace.
-                Work doesn't feel like work here. 
+                The future of work is here. Ready when you are. 
                 <br/>
                 Jump in!
               </p>
