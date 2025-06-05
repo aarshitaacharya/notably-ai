@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono, IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
+import { Toaster } from "sonner";
 
 
 const ibmPlexSans = IBM_Plex_Sans({
@@ -31,6 +32,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${ibmPlexSans.variable} antialiased`}
       >
+        <Toaster/>
         {children}
       </body>
     </html>

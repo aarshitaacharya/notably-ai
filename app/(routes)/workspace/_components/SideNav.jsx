@@ -10,6 +10,10 @@ import { setDoc , doc} from 'firebase/firestore';
 import uuid4 from 'uuid4';
 import { useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
+import { Progress } from "@/components/ui/progress"
+import { toast } from 'sonner'
+
+const MAX_FILE = 5
 
 function SideNav({ params }) {
 
@@ -44,9 +48,21 @@ function SideNav({ params }) {
 
 
         const CreateNewDocument=async()=>{
+            
+            if(documentList?.length>=MAX_FILE){
+                toast("Upgrade to add a new file", {
+                    description:"You have reached the maximum file limits, please upgrade for unlimited file creations.",
+                    action: {
+                        label: "Upgrade",
+                        onClick:()=> console.log("undo"),
+                    },
+                })
+                return;
+            }
+            
             setLoading(true);
             const docId = uuid4();
-        
+         
             await setDoc(doc(db,'workspaceDocuments', docId.toString()), {
                 workspaceId: Number(params?.workspaceid),
                 createdBy: user?.primaryEmailAddress?.emailAddress,
@@ -55,6 +71,10 @@ function SideNav({ params }) {
                 id:docId,
                 documentName:'Untitled Document',
                 documentOutput:[]
+            })
+            await setDoc(doc(db, 'documentOutput', docId.toString()),{
+                docId:docId,
+                output:[]
             })
             setLoading(false);
             router.replace('/workspace/'+params?.workspaceid+"/"+docId);
@@ -81,6 +101,14 @@ function SideNav({ params }) {
     </div>
 
     <DocumentList documentList = {documentList} params={params} />
+
+
+
+    <div className="px-4 absolute bottom-10 w-[90%]">
+        <Progress value={(documentList?.length/MAX_FILE)*100} />
+        <h5 className="text-sm my-2 font-light"><strong>{documentList?.length}</strong> out of <strong>5</strong> files used</h5>
+        <h5 className="text-sm my-2 font-light">Upgrade for unlimited access.</h5>
+    </div>
     </div>
   )
 }
