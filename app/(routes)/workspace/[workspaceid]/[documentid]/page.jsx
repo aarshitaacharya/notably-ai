@@ -1,9 +1,20 @@
-import React from 'react'
+"use client"
+import React, { use } from 'react'
+import SideNav from '../../_components/SideNav'
 
-function page() {
+function WorkspaceDocument({params}) {
+  const unwrappedParams = use(params)
   return (
-    <div>page</div>
+    <div>
+      <div>
+        <SideNav params={unwrappedParams} />
+      </div>
+
+      <div className="md:ml-72">
+        Document
+      </div>
+    </div>
   )
 }
 
-export default page
+export default WorkspaceDocument

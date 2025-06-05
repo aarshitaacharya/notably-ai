@@ -45,6 +45,7 @@ function CreateWorkspace() {
             coverImage:null,
             emoji:null,
             id:docId,
+            documentName:'Untitled Document',
             documentOutput:[]
         })
 

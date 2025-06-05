@@ -1,10 +1,10 @@
 import React from 'react'
-import logo from '@/assets/logo.jpg'
+import logo from '@/assets/logo.png'
 import Image from 'next/image'
 
 function Logo() {
   return (
-    <div className = "flex items-center gap-1">
+    <div className = "flex items-center">
         <Image 
         src= {logo}
         alt = "logo"
