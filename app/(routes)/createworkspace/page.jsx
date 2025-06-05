@@ -6,11 +6,13 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { SmilePlus } from 'lucide-react';
 import CoverPicker from '@/app/_components/CoverPicker'
+import EmojiPickerComponent from '@/app/_components/EmojiPickerComponent'
 
 function CreateWorkspace() {
 
     const [coverImage, setCoverImage] = useState(cover1);
     const [workspaceName, setWorkspaceName ] = useState();
+    const [emoji, setEmoji] = useState();
 
   return (
     <div className="p-10 md:px-36 lg:px-52 xl:px-80 py-40">
@@ -24,7 +26,7 @@ function CreateWorkspace() {
                 width={600}
                 height={150}
                 alt="cover"
-                className="w-full h-[150px] object-cover rounded-t-xl transition-opacity group-hover:opacity-35"
+                className="w-full h-[180px] object-cover rounded-t-xl transition-opacity group-hover:opacity-35"
             />
             <h3 className="hidden group-hover:flex absolute inset-0 items-center justify-center text-white text-sm font-medium bg-black/20">
                 Change Cover
@@ -41,9 +43,12 @@ function CreateWorkspace() {
         </h4>
 
         <div className="mt-8 flex gap-2 items-center">
-            <Button variant="outline">
-            <SmilePlus className="mr-2" />
-            </Button>
+            <EmojiPickerComponent setEmojiIcon={(v)=>setEmoji(v)}>
+                <Button variant="outline">
+                    {emoji?emoji: <SmilePlus className="mr-2" />}
+                    
+                </Button>
+            </EmojiPickerComponent>
             <Input placeholder = "Workspace Name" 
             onChange={(e)=> setWorkspaceName(e.target.value)}
             />
