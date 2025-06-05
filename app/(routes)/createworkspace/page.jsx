@@ -4,15 +4,58 @@ import React, { useState } from 'react'
 import cover1 from '@/assets/cover1.jpg'
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { SmilePlus } from 'lucide-react';
+import { Loader2Icon, SmilePlus } from 'lucide-react';
 import CoverPicker from '@/app/_components/CoverPicker'
 import EmojiPickerComponent from '@/app/_components/EmojiPickerComponent'
+import { db } from '@/config/firebaseConfig';
+import { useUser } from '@clerk/nextjs';
+import { useAuth } from '@clerk/clerk-react';
+import { setDoc , doc} from 'firebase/firestore';
+import { useRouter } from 'next/navigation';
+import uuid4 from 'uuid4';
 
 function CreateWorkspace() {
 
     const [coverImage, setCoverImage] = useState(cover1);
-    const [workspaceName, setWorkspaceName ] = useState();
-    const [emoji, setEmoji] = useState();
+    const [workspaceName, setWorkspaceName ] = useState("");
+    const [emoji, setEmoji] = useState("");
+    const {user} = useUser();
+    const {orgId} = useAuth();
+
+    const [loading, setLoading] = useState(false);
+    const router = useRouter();
+
+    const OnCreateWorkspace=async()=>{
+        setLoading(true);
+        const workspaceId = Date.now();
+        const result = await setDoc(doc(db, 'Workspace', workspaceId.toString()), {
+            workspaceName:workspaceName,
+            emoji:emoji,
+            coverImage:coverImage.src,
+            createdBy:user?.primaryEmailAddress?.emailAddress,
+            id:workspaceId,
+            orgId: orgId || user?.primaryEmailAddress?.emailAddress
+        });
+
+        const docId = uuid4();
+        
+        await setDoc(doc(db,'workspaceDocuments', docId.toString()), {
+            workspaceId: workspaceId,
+            createdBy: user?.primaryEmailAddress?.emailAddress,
+            coverImage:null,
+            emoji:null,
+            id:docId,
+            documentOutput:[]
+        })
+
+        await setDoc(doc(db, 'documentOutput', docId.toString()),{
+            docId:docId,
+            output:[]
+        })
+
+        setLoading(false);
+        router.replace('/workspace/'+workspaceId+"/"+docId);
+    } 
 
   return (
     <div className="p-10 md:px-36 lg:px-52 xl:px-80 py-40">
@@ -55,7 +98,9 @@ function CreateWorkspace() {
         </div>
 
         <div className = "mt-7 flex justify-end gap-6">
-            <Button disabled={!workspaceName?.length} className="bg-[#8230ff] text-white hover:bg-[#732ae6]">Create</Button>
+            <Button disabled={!workspaceName?.length || loading} className="bg-[#8230ff] text-white hover:bg-[#732ae6]"
+            onClick={OnCreateWorkspace}
+            >Create {loading&&<Loader2Icon className="animate-spin ml-2" />}</Button>
             <Button variant="outline">Cancel</Button>
         </div>
         </div>
