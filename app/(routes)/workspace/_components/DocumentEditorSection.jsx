@@ -1,6 +1,8 @@
+"use client"
 import React from 'react'
 import DocumentHeader from './DocumentHeader'
 import DocumentInfo from './DocumentInfo'
+import RichDocumentEditor from './RichDocumentEditor'
 
 function DocumentEditorSection({params}) {
 
@@ -11,7 +13,7 @@ function DocumentEditorSection({params}) {
 
         <DocumentInfo params={params} />
 
-
+        <RichDocumentEditor/>
 
 
 

@@ -1,3 +1,4 @@
+"use client"
 import React, { useEffect, useState } from 'react'
 import CoverPicker from '@/app/_components/CoverPicker'
 import Image from 'next/image'
@@ -72,7 +73,7 @@ function DocumentInfo({params}) {
         </EmojiPickerComponent>
         </div>
 
-        <div className="mt-10 p-10">
+        <div className="mt-10 p-10 px-20 ml-10">
             <input type="text" 
             placeholder="Untitled Document"
             defaultValue={documentInfo?.documentName}
