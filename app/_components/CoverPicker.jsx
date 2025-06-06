@@ -19,7 +19,7 @@ function CoverPicker({children, setNewCover}) {
 
   return (
     <Dialog>
-    <DialogTrigger>{children}</DialogTrigger>
+    <DialogTrigger className="w-full">{children}</DialogTrigger>
     <DialogContent>
       <DialogHeader>
         <DialogTitle>Update Cover</DialogTitle>
