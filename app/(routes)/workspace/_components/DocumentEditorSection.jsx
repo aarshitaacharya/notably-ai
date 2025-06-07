@@ -1,27 +1,23 @@
-"use client"
-import React from 'react'
+import React, { useState } from 'react'
 import DocumentHeader from './DocumentHeader'
 import DocumentInfo from './DocumentInfo'
 import RichDocumentEditor from './RichDocumentEditor'
 
-function DocumentEditorSection({params}) {
+function DocumentEditorSection({ params }) {
 
+  const [openComment, setOpenComment] = useState(false);
   return (
-    <div>
+    <div className='relative'>
+      {/* Header  */}
+      <DocumentHeader />
 
-        <DocumentHeader />
+      {/* Document Info  */}
+      <DocumentInfo params={params} />
 
-        <div className ="relative">
-          <DocumentInfo params={params} />
-
-        <RichDocumentEditor params={params}/>
-        </div>
-
-
-
-
-
-
+      {/* Rich Text Editor  */}
+ 
+        <RichDocumentEditor params={params} />
+    
     </div>
   )
 }
