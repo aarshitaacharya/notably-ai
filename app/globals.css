@@ -167,3 +167,11 @@ h6.ce-header{
     @apply bg-background text-foreground;
   }
 }
+
+#editorjs .codex-editor,
+#editorjs .ce-block__content {
+  max-width: none !important;
+  margin-left: s0 !important;
+  margin-right: 0 !important;
+  padding-left: 0 !important;
+}

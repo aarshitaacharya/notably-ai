@@ -11,9 +11,11 @@ function DocumentEditorSection({params}) {
 
         <DocumentHeader />
 
-        <DocumentInfo params={params} />
+        <div className ="relative">
+          <DocumentInfo params={params} />
 
-        <RichDocumentEditor/>
+        <RichDocumentEditor params={params}/>
+        </div>
 
 
 
