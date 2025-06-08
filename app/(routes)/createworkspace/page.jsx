@@ -11,10 +11,11 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 import uuid4 from 'uuid4';
+import cover1 from '@/assets/cover1.jpg'
 
 function CreateWorkspace() {
 
-    const [coverImage,setCoverImage]=useState('/cover.png');
+    const [coverImage,setCoverImage]=useState(cover1);
     const [workspaceName,setWorkspaceName]=useState();
     const [emoji,setEmoji]=useState();
     const {user}=useUser();
@@ -22,13 +23,10 @@ function CreateWorkspace() {
     const [loading,setLoading]=useState(false);
     const router=useRouter();
 
-    /**
-     * Used to create new workspace and save data in database
-     */
     const OnCreateWorkspace=async()=>{
         setLoading(true);
         const workspaceId=Date.now();
-        const result=await setDoc(doc(db,'Workspace',workspaceId),{
+        const result=await setDoc(doc(db,'Workspace',workspaceId.toString()),{
             workspaceName:workspaceName,
             emoji:emoji,
             coverImage:coverImage,
@@ -67,7 +65,7 @@ function CreateWorkspace() {
                     items-center group-hover:flex
                     justify-center  '>Change Cover</h2>
                     <div className='group-hover:opacity-40'>
-                        <Image src={coverImage} width={400} height={400}
+                        <Image src={coverImage} width={400} height={400} alt="cover"
                         className='w-full h-[180px] object-cover rounded-t-xl'
                         />
                     </div>

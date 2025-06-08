@@ -91,7 +91,7 @@ function RichDocumentEditor({ params }) {
   useEffect(() => {
     if (!user || !params?.documentid) return;
 
-    const docRef = doc(db, 'documentOutput', params.documentid);
+    const docRef = doc(db, 'documentOutput', params.documentid.toString());
     const unsubscribe = onSnapshot(docRef, (docSnap) => {
       const data = docSnap.data();
       if (!data) return;
