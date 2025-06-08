@@ -30,9 +30,12 @@ function DocumentList({documentList, params}) {
                     {!doc.emoji&&
                     <Image src={document} width={20} height={20}
                     alt="document" />}
-                    <h4 className="flex gap-2">{doc?.emoji}{doc.documentName}</h4>
+                    <h4 className="flex items-center gap-2">
+                      <span>{doc.emoji}</span>
+                      <span>{doc.documentName}</span>
+                    </h4>
                     </div>
-                    <DocumentOptions doc={doc} 
+                      <DocumentOptions doc={doc} 
                     deleteDocument={(docId)=>DeleteDocument(docId)}
                     />
             </div>

@@ -2,7 +2,7 @@
 import Logo from '@/app/_components/Logo'
 import { Button } from '@/components/ui/button'
 import { db } from '@/config/firebaseConfig'
-import { collection, onSnapshot, query, where } from 'firebase/firestore'
+import { collection, getDoc, onSnapshot, query, where } from 'firebase/firestore'
 import { Bell, Loader2Icon } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import DocumentList from './DocumentList'
@@ -21,18 +21,37 @@ function SideNav({ params }) {
     const {user} = useUser();
     const [loading, setLoading] = useState(false);
     const router = useRouter();
+    const [workspaceName, setWorkspaceName] = useState('');
+
+    const [emoji, setEmoji] = useState('');
 
     useEffect(()=>{
-        params&&GetDocumentList();
+        if(!params?.workspaceid) {
+            console.log("undefineddd")
+        };
 
-    },[params])
+        GetDocumentList();
+        FetchWorkspaceName();
+    }, [params]);
 
+
+    const FetchWorkspaceName = async () => {
+        const docRef = doc(db, 'Workspace', params.workspaceid.toString());
+        const docSnap = await getDoc(docRef);
+
+        if(docSnap.exists()){
+            setWorkspaceName(docSnap.data().workspaceName)
+            setEmoji(docSnap.data().emoji)
+        }else{
+            setWorkspaceName("Workspace not found")
+        }
+    }
 
     const GetDocumentList = () => {
         const q = query(
             collection(db, 'workspaceDocuments'),
             where('workspaceId', '==', Number(params?.workspaceid))
-        );
+        )
 
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
             setDocumentList(
@@ -92,8 +111,8 @@ function SideNav({ params }) {
     </div>
     <hr className="my-5"></hr>
     <div>
-        <div className = "flex justify-between items-center p-3">
-            <h3 className="font-medium">Workspace Name</h3>
+        <div className = "flex justify-between items-center px-3">
+            <h3 className="font-medium">{emoji}  {workspaceName || "Loading.."}</h3>
         <Button size="sm" onClick={CreateNewDocument}>
             {loading?<Loader2Icon className="h-4 w-4 animate-spin" />:
             '+'}</Button>

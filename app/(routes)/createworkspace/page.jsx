@@ -28,7 +28,7 @@ function CreateWorkspace() {
     const OnCreateWorkspace=async()=>{
         setLoading(true);
         const workspaceId=Date.now();
-        const result=await setDoc(doc(db,'Workspace',workspaceId.toString()),{
+        const result=await setDoc(doc(db,'Workspace',workspaceId),{
             workspaceName:workspaceName,
             emoji:emoji,
             coverImage:coverImage,
