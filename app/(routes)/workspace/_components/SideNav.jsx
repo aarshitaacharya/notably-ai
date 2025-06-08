@@ -103,7 +103,7 @@ function SideNav({ params }) {
   return (
     <div className="h-screen md:w-72 hidden md:block fixed 
     bg-blue-50
-    pr-3 shadow-md"
+    pr-3 shadow-md z-50"
     >
     <div className="flex justify-between items-center">
         <Logo/>

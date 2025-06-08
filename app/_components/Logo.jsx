@@ -1,10 +1,11 @@
 import React from 'react'
 import logo from '@/assets/logo.png'
 import Image from 'next/image'
+import Link from 'next/link'
 
 function Logo() {
   return (
-    <div className = "flex items-center">
+   <Link href={'/dashboard'} className='flex items-center gap-2'>
         <Image 
         src= {logo}
         alt = "logo"
@@ -12,7 +13,7 @@ function Logo() {
         height = {100}
         />
         <h2 className = "font-bold text-xl">Notably AI </h2>
-    </div>
+    </Link>
   )
 }
 

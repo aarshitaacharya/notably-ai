@@ -110,7 +110,7 @@ function RichDocumentEditor({ params }) {
   }, [user, params?.documentid]);
 
   return (
-    <div className="px-40">
+    <div className="px-40 mr-20">
       <div id="editorjs" className="w-[70%]"></div>
     </div>
   );

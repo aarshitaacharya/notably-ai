@@ -2,6 +2,7 @@ import { Geist, Geist_Mono, IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "sonner";
+import "@liveblocks/react-ui/styles.css"
 
 
 const ibmPlexSans = IBM_Plex_Sans({
