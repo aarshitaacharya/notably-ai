@@ -86,8 +86,11 @@ function RichDocumentEditor({ params }) {
   };
 
   useEffect(() => {
-    if (user) InitEditor();
-  }, [user]);
+  if (user && params?.documentid) {
+    InitEditor();
+  }
+}, [user, params?.documentid]);
+
 
   useEffect(() => {
     if (!user || !params?.documentid) return;
@@ -101,10 +104,21 @@ function RichDocumentEditor({ params }) {
       const isFirstLoad = !isFetchedRef.current;
 
       if ((isOtherClient || isFirstLoad) && editorRef.current) {
-        editorRef.current.render(data.output);
-        isFetchedRef.current = true;
-        console.log("Rendered update from Firestore");
+        const parsedOutput = typeof data.output === 'string' ? JSON.parse(data.output) : data.output;
+
+        editorRef.current.isReady
+          .then(() => {
+            editorRef.current.render(parsedOutput);
+            isFetchedRef.current = true;
+            console.log("Rendered update from Firestore");
+          })
+          .catch((err) => {
+            console.error("Editor not ready:", err);
+          });
       }
+
+
+
     });
 
     return () => unsubscribe(); 
@@ -114,7 +128,13 @@ function RichDocumentEditor({ params }) {
     <div className="pl-40">
       <div id="editorjs" className="w-[70%]"></div>
       <div className="fixed bottom-10 md:ml-80 left-0 z-10">
-      <GenerateAITemplate setGenerateAIOutput={(output) => editorRef.current?.render(output)} />
+      <GenerateAITemplate
+      setGenerateAIOutput={async (output) => {
+          await editorRef.current?.render(output);
+          SaveDocument();
+        }}
+      />
+
       </div>
     </div>
   );
