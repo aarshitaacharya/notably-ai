@@ -13,6 +13,7 @@ import Paragraph from '@editorjs/paragraph';
 import { doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { db } from '@/config/firebaseConfig';
 import { useUser } from '@clerk/nextjs';
+import GenerateAITemplate from './GenerateAITemplate'
 
 const CLIENT_ID = `${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
 
@@ -26,7 +27,7 @@ function RichDocumentEditor({ params }) {
       const data = await editorRef.current?.save();
       const docRef = doc(db, 'documentOutput', params?.documentid);
       await updateDoc(docRef, {
-        output: JSON.stringify,
+        output: JSON.stringify(data),
         editedBy: user?.primaryEmailAddress?.emailAddress,
         clientId: CLIENT_ID,
       });
@@ -110,8 +111,11 @@ function RichDocumentEditor({ params }) {
   }, [user, params?.documentid]);
 
   return (
-    <div className="px-40 mr-20">
+    <div className="pl-40">
       <div id="editorjs" className="w-[70%]"></div>
+      <div className="fixed bottom-10 md:ml-80 left-0 z-10">
+      <GenerateAITemplate setGenerateAIOutput={(output) => editorRef.current?.render(output)} />
+      </div>
     </div>
   );
 }

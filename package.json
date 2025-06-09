@@ -19,6 +19,7 @@
     "@editorjs/paragraph": "^2.11.7",
     "@editorjs/simple-image": "^1.6.0",
     "@editorjs/table": "^2.4.5",
+    "@google/generative-ai": "^0.24.1",
     "@liveblocks/client": "^2.24.3",
     "@liveblocks/node": "^2.24.3",
     "@liveblocks/react": "^2.24.3",
