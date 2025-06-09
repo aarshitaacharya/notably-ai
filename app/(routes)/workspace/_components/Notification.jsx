@@ -8,45 +8,41 @@ import {
 } from "@/components/ui/popover";
 import {
   useInboxNotifications,
+  useRoom,
   useUnreadInboxNotificationsCount,
-  useUpdateRoomNotificationSettings,
+  useUpdateRoomSubscriptionSettings,
 } from "@liveblocks/react/suspense";
 import {
   InboxNotification,
   InboxNotificationList,
 } from "@liveblocks/react-ui";
 
-// Utility: Check if we're inside a Liveblocks context
-function useSafeLiveblocksHook(hook, fallback = undefined) {
+function NotificationBoxWrapper({ children }) {
   try {
-    return hook();
+    return <NotificationBox children={children} />;
   } catch (err) {
     if (process.env.NODE_ENV !== "production") {
-      console.warn("Liveblocks hook used outside of provider:", hook.name);
+      console.warn("NotificationBox used outside Liveblocks provider");
     }
-    return fallback;
+    return null; // or return a minimal fallback
   }
 }
 
+
 function NotificationBox({ children }) {
-  // use safe wrappers to prevent crashing if not in provider
-  const inboxNotifications =
-    useSafeLiveblocksHook(useInboxNotifications, { inboxNotifications: [] })
-      .inboxNotifications || [];
-  const updateRoomNotificationSettings = useSafeLiveblocksHook(
-    useUpdateRoomNotificationSettings,
-    () => () => {}
-  );
-  const { count = 0, error, isLoading } =
-    useSafeLiveblocksHook(useUnreadInboxNotificationsCount, {
-      count: 0,
-      error: null,
-      isLoading: false,
-    });
+  const inboxNotifications = useInboxNotifications().inboxNotifications || [];
+  const updateRoomSubscriptionSettings = useUpdateRoomSubscriptionSettings();
+  const { count = 0 } = useUnreadInboxNotificationsCount();
+
+  const { isStorageLoading } = useRoom();
 
   useEffect(() => {
-    updateRoomNotificationSettings({ threads: "all" });
-  }, [count]);
+    if (!isStorageLoading) {
+      updateRoomSubscriptionSettings({ threads: "all" });
+    }
+  }, [isStorageLoading]);
+
+
 
   return (
     <Popover>

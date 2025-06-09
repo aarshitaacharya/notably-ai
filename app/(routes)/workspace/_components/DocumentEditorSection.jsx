@@ -25,7 +25,7 @@ function DocumentEditorSection({ params }) {
             <RichDocumentEditor params={params} />
           </div>
 
-        <div className="fixed right-5 bottom-5 z-50">
+        <div className="fixed right-5 bottom-5 {dropdownOpen ? 'z-40' : 'z-50'}">
           <Button onClick={()=>setOpenComment(!openComment)}>
             {openComment?<X/>:<MessageCircle/>}</Button>
           {openComment&&<CommentBox/>}
