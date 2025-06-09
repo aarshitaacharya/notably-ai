@@ -26,7 +26,7 @@ function RichDocumentEditor({ params }) {
       const data = await editorRef.current?.save();
       const docRef = doc(db, 'documentOutput', params?.documentid);
       await updateDoc(docRef, {
-        output: data,
+        output: JSON.stringify,
         editedBy: user?.primaryEmailAddress?.emailAddress,
         clientId: CLIENT_ID,
       });
