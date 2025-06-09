@@ -12,7 +12,7 @@ import { useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
 import { Progress } from "@/components/ui/progress"
 import { toast } from 'sonner'
-import  Notification  from './Notification'
+import  NotificationBox  from './NotificationBox'
 
 const MAX_FILE = 5
 
@@ -109,9 +109,9 @@ function SideNav({ params }) {
     <div className="flex justify-between items-center">
         <Logo/>
         
-    <Notification>
+    <NotificationBox>
         <Bell className = "h-5 w-5 text-gray-500"/>
-    </Notification>
+    </NotificationBox>
     </div>
     <hr className="my-5"></hr>
     <div>

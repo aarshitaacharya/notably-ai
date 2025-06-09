@@ -1,18 +1,32 @@
-"use client"
-import React from 'react'
-import SideNav from '../_components/SideNav'
+"use client";
 
-function Workspace({params}) {
-  return (
-    <div>
-        <SideNav params={params}/>
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { db } from "@/config/firebaseConfig";
+import { collection, query, where, getDocs } from "firebase/firestore";
 
-        <div className="flex items-center justify-center h-screen ml-50">
-        <h2 className="text-gray-500 text-xl">Please select a document to view</h2>
-      </div>
+export default function WorkspaceRedirectPage({ params }) {
+  const router = useRouter();
 
-    </div>
-  )
+  useEffect(() => {
+    async function redirectToFirstDoc() {
+      const q = query(
+        collection(db, "workspaceDocuments"),
+        where("workspaceId", "==", Number(params.workspaceid))
+      );
+      const snapshot = await getDocs(q);
+
+      if (!snapshot.empty) {
+        const firstDoc = snapshot.docs[0];
+        router.replace(`/workspace/${params.workspaceid}/${firstDoc.id}`);
+      } else {
+        // No documents in workspace: Optional placeholder UI
+        console.warn("No documents found in this workspace.");
+      }
+    }
+
+    redirectToFirstDoc();
+  }, [params.workspaceid, router]);
+
+  return <div className="p-6 text-gray-500">Loading workspace...</div>;
 }
-
-export default Workspace

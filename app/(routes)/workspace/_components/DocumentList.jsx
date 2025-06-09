@@ -19,25 +19,19 @@ function DocumentList({documentList, params}) {
 
     return (
     
-    <div className="p-3">
-        {documentList.map((doc, index)=>(
-            <div key={index} className={`mt-3 p-2 px-3 
-            hover:bg-gray-200 rounded-lg 
-            cursor-pointer flex justify-between items-center
-            ${doc?.id==params?.documentid&&'bg-white'}    
-            `} onClick={()=>router.push('/workspace/'+params?.workspaceid+'/'+doc?.id)}>
+    <div>
+        {documentList.map((doc,index)=>(
+            <div key={index} 
+            onClick={()=>router.push('/workspace/'+params?.workspaceid+"/"+doc?.id)}
+            className={`mt-3 p-2 px-3 hover:bg-gray-200 
+            rounded-lg cursor-pointer flex justify-between items-center
+            ${doc?.id==params?.documentid&&'bg-white'}
+            `}>
                 <div className='flex gap-2 items-center'>
-                    {!doc.emoji&&
-                    <Image src={document} width={20} height={20}
-                    alt="document" />}
-                    <h4 className="flex items-center gap-2">
-                      <span>{doc.emoji}</span>
-                      <span>{doc.documentName}</span>
-                    </h4>
-                    </div>
-                      <DocumentOptions doc={doc} 
-                    deleteDocument={(docId)=>DeleteDocument(docId)}
-                    />
+                  {!doc.emoji&&  <Image src={document} width={20} height={20}/>}
+                    <h4 className='flex gap-2'> {doc?.emoji} {doc.documentName}</h4>
+                </div>
+                <DocumentOptions doc={doc} deleteDocument={(docId)=>DeleteDocument(docId)} />
             </div>
         ))}
     </div>

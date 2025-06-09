@@ -14,12 +14,17 @@ function WorkspaceDocument({ params }) {
 
   return (
     <Room params={actualParams}>
-      <div className="flex">
-        <SideNav params={actualParams} />
-        <div className="flex-grow md:ml-72">
-          <DocumentEditorSection params={actualParams} />
-        </div>
+    <div>
+      {/* Side Nav  */}
+      <div className=''>
+          <SideNav params={actualParams} />
       </div>
+
+      {/* Document  */}
+      <div className='md:ml-72'>
+        <DocumentEditorSection params={actualParams} />
+      </div>
+    </div>
     </Room>
   );
 }

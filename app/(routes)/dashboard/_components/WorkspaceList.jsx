@@ -16,28 +16,19 @@ function WorkspaceList() {
   const [workspaceList, setWorkspaceList] = useState([]);
   const {orgId} = useAuth();
 
-  useEffect(()=>{ 
-    user&&getWorkspaceList();
-  },[orgId, user])
-
-
-  const getWorkspaceList=async()=>{
-    const q =query(collection(
-      db,'Workspace'
-    ),where(
-      'orgId', '==', orgId?orgId:user?.primaryEmailAddress?.emailAddress
-    ))
-
-    const querySnapshot = await getDocs(q);
-
-    const newList = querySnapshot.docs.map(doc => ({
-      id: doc.id,   
-      ...doc.data()
-    }));
-
-    setWorkspaceList(newList);
-
-  }
+  useEffect(()=>{
+        user&&getWorkspaceList()
+    },[orgId,user])
+    const getWorkspaceList=async()=>{
+        
+        const q=query(collection(db,'Workspace'),where('orgId','==',orgId?orgId:user?.primaryEmailAddress?.emailAddress))
+        const querySnapshot=await getDocs(q);
+        setWorkspaceList([]);
+        querySnapshot.forEach((doc)=>{
+            console.log(doc.data())
+            setWorkspaceList(prev=>[...prev,doc.data()])
+        })
+    }
 
   return (
     <div className="my-10 p-10 md:px-24 lg:px-36 cl:px-52">

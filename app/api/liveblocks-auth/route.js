@@ -16,7 +16,6 @@ export async function POST(request) {
     user?.primaryEmailAddress?.emailAddress
   );
 
-  const {room} = await request.json();
   const {searchParams} = new URL(request?.url);
   const roomId = searchParams.get('roomId');
   console.log("Room", roomId);

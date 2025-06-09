@@ -1,58 +1,52 @@
 "use client";
 
-import { db } from "@/config/firebaseConfig";
+import { ReactNode } from "react";
 import {
   LiveblocksProvider,
   RoomProvider,
   ClientSideSuspense,
 } from "@liveblocks/react/suspense";
 import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "@/config/firebaseConfig";
 
-export function Room({ children, params }) {
-  const roomId = params?.documentid;
-
-  if (!roomId) {
-    return <div>Error: Missing room ID</div>;
-  }
-
+export function Room({ children,params }) {
   return (
-    <LiveblocksProvider
-      authEndpoint={`/api/liveblocks-auth?roomId=${roomId}`}
-      resolveUsers={async ({ userIds }) => {
-        const q = query(collection(db, "Users"), where("email", "in", userIds));
-        const querySnapshot = await getDocs(q);
+    <LiveblocksProvider 
+    authEndpoint={"/api/liveblocks-auth?roomId="+params?.documentid}
 
-        const userList = [];
-        querySnapshot.forEach((doc) => {
-          userList.push(doc.data());
-        });
+    resolveUsers={async ({ userIds }) => {
+      const q=query(collection(db,'LoopUsers'),where('email','in',userIds));
+      const querySnapshot=await getDocs(q);
+      const userList=[];
+      querySnapshot.forEach((doc)=>{
+        console.log(doc.data())
+        userList.push(doc.data())
+      })
+     return userList
+    }}
+    
+    resolveMentionSuggestions={async ({ text, roomId }) => {
+     
+      const q=query(collection(db,'LoopUsers'),where('email','!=',null));
+      const querySnapshot=await getDocs(q);
+      let userList=[];
+      querySnapshot.forEach((doc)=>{
+        
+        userList.push(doc.data())
+      })
+      console.log(userList)
+  
+      if (text) {
+        // Filter any way you'd like, e.g. checking if the name matches
+        userList = userList.filter((user) => user.name.includes(text));
+      }
+      console.log(userList.map((user) => user.email))
 
-        return userList;
-      }}
-      resolveMentionSuggestions={async ({ text }) => {
-        const q = query(collection(db, "Users"), where("email", "!=", null));
-        const querySnapshot = await getDocs(q);
-
-        let userList = [];
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          userList.push({
-            id: data.email,
-            name: data.name || data.email,
-            avatar: data.avatar || "",
-          });
-        });
-
-        if (text) {
-          userList = userList.filter((user) =>
-            (user.name || user.id).toLowerCase().includes(text.toLowerCase())
-          );
-        }
-
-        return userList.map((user) => user.id);
-      }}
+      // Return a list of user IDs that match the query
+      return userList.map((user) => user.email);
+    }}
     >
-      <RoomProvider id={roomId}>
+      <RoomProvider id={params?.documentid?params?.documentid:'1'}>
         <ClientSideSuspense fallback={<div>Loading…</div>}>
           {children}
         </ClientSideSuspense>

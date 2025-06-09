@@ -1,3 +1,4 @@
+"use client"
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React from 'react'
@@ -12,13 +13,10 @@ const OnClickWorkspaceItem=(workspaceId)=>{
     <div className="w-full flex mt-5">
       <div className="w-full max-w-screen-xl grid grid-cols-2 md:grid-cols-3 gap-6">
         {workspaceList && workspaceList.map((workspace, index) => (
-          <div key={index} className="border shadow-xl rounded-xl overflow-hidden
-          hover:scale-105 transition-all
-          bg-white cursor-pointer"
-          
-          onClick={() => router.push('/workspace/' + workspace.id)}
-
-          >
+          <div key={index} className='border shadow-xl rounded-xl
+            hover:scale-105 transition-all cursor-pointer'
+            onClick={()=>OnClickWorkspaceItem(workspace.id)}
+            >
             <Image 
               src={workspace?.coverImage}
               height={200}
